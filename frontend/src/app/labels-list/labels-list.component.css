@@ -1,5 +1,11 @@
 .label-container {
-  height: 60px;
+  height: 80px;
+  border: none;
+}
+
+.label-container.has-labels {
+  border: solid #43729d;
+  padding: 5px ;
 }
 
 .input-container {

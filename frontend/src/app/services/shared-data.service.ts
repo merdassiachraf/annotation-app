@@ -15,8 +15,17 @@ export class SharedDataService {
   private cacheAnnotationData: Annotation[] = []; 
 
   addAnnotationData(annotation: Annotation) {
-    this.cacheAnnotationData.push(annotation);
-    console.log('Cache Annotation Data:', this.cacheAnnotationData);
+    // Check for duplicates
+    const isDuplicate = this.cacheAnnotationData.some(ann =>
+      ann.text === annotation.text && ann.start === annotation.start && ann.end === annotation.end
+    );
+
+    if (!isDuplicate) {
+      this.cacheAnnotationData.push(annotation);
+      console.log('Cache Annotation Data:', this.cacheAnnotationData);
+    } else {
+      console.log('Duplicate annotation found, not adding:', annotation);
+    }
   }
 
   getAnnotationData() {

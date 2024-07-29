@@ -1,27 +1,17 @@
 import { Component } from '@angular/core';
-import { MessageService } from 'primeng/api';
-import { FileUploadModule } from 'primeng/fileupload';
-import { ToastModule } from 'primeng/toast';
-
-interface UploadEvent {
-  originalEvent: Event;
-  files: File[];
-}
-
+import { FileUploadService } from '../services/file-upload.service';
 
 @Component({
   selector: 'app-file-upload',
   standalone: true,
-  imports: [FileUploadModule, ToastModule],
+  imports: [],
   templateUrl: './file-upload.component.html',
-  styleUrl: './file-upload.component.css',
-  providers: [MessageService]
+  styleUrls: ['./file-upload.component.css'],
 })
-
 export class FileUploadComponent {
-  constructor(private messageService: MessageService) { }
 
-  onUpload(event: UploadEvent) {
-    this.messageService.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded with Basic Mode' });
-  }
+  constructor() { }
+
+ 
+   
 }

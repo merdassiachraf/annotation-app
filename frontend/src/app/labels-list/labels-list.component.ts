@@ -32,7 +32,7 @@ export class LabelsListComponent {
     const color = this.colors[this.labels.length % this.colors.length];
     this.labels.push({ text: formattedLabel, color });
     this.newLabel = '';
-    this.errorMessage = null; // Clear error message on successful addition
+    this.errorMessage = null; 
   }
 
   removeLabelButton(label: string, event: Event) {

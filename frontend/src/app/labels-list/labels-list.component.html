@@ -2,7 +2,7 @@
   <div class="input-container ml-5">
     <input type="text" [(ngModel)]="newLabel" (keydown.enter)="addLabelButton()" placeholder="Enter label" />
   </div>
-  <div class="label-container ">
+  <div class="label-container my-3" [class.has-labels]="labels.length > 0">
     <span *ngFor="let label of labels" [ngStyle]="{'background-color': label.color}" class="label-tag" (click)="applyLabel(label)">
       {{ label.text }}
       <button (click)="removeLabelButton(label.text, $event)" class="remove-button">x</button>

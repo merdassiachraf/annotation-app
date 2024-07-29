@@ -14,6 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 })
 export class SelectorAreaComponent {
   loading: boolean = false;
+  currentSpan: HTMLElement | null = null;
 
   constructor(
     private renderer: Renderer2,
@@ -30,6 +31,7 @@ export class SelectorAreaComponent {
       const span = this.renderer.createElement('span');
       this.renderer.addClass(span, 'selected');
       range.surroundContents(span);
+      this.currentSpan = span;
 
       selectedText.removeAllRanges();
 
@@ -76,6 +78,18 @@ export class SelectorAreaComponent {
 
   private isWordBoundary(char: string): boolean {
     return /\s/.test(char) || /[.,!?;:]/.test(char);
+  }
+
+  onLabelClick() {
+    if (this.currentSpan) {
+      this.renderer.setStyle(this.currentSpan, 'background-color', 'red');
+      this.renderer.removeClass(this.currentSpan, 'selected');
+      const annotation = this.sharedDataService.getAnnotationData().pop();
+      if (annotation) {
+        annotation.label = 'YourLabel'; 
+        this.sharedDataService.addAnnotationData(annotation);
+      }
+    }
   }
 
   load() {
