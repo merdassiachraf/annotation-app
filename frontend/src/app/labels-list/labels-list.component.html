@@ -1,0 +1,14 @@
+<div class="input-wrapper">
+  <div class="input-container">
+    <input type="text" [(ngModel)]="newLabel" (keydown.enter)="addLabelButton()" placeholder="Enter label" />
+  </div>
+  <div class="label-container">
+    <span *ngFor="let label of labels" [ngStyle]="{'background-color': label.color}" class="label-tag" (click)="applyLabel(label)">
+      {{ label.text }}
+      <button (click)="removeLabelButton(label.text, $event)" class="remove-button">x</button>
+    </span>
+  </div>
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+</div>
