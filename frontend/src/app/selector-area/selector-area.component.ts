@@ -1,4 +1,4 @@
-import { Component, Renderer2 } from '@angular/core';
+import { Component, Renderer2, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { SharedDataService } from '../services/shared-data.service';
 import { Annotation } from '../services/annotation.model';
@@ -12,15 +12,24 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrls: ['./selector-area.component.css'],
   imports: [ButtonModule, HttpClientModule]
 })
-export class SelectorAreaComponent {
+export class SelectorAreaComponent implements OnInit {
   loading: boolean = false;
   currentSpan: HTMLElement | null = null;
+  documentContent: string = '';
 
   constructor(
     private renderer: Renderer2,
     private sharedDataService: SharedDataService,
     private http: HttpClient
   ) { }
+
+  ngOnInit() {
+    // Subscribe to changes in the report document
+    this.documentContent = this.sharedDataService.report.report.document;
+    this.sharedDataService.report$.subscribe(report => {
+      this.documentContent = report.report.document;
+    });
+  }
 
   onMouseUp() {
     const selectedText = window.getSelection();
@@ -86,7 +95,7 @@ export class SelectorAreaComponent {
       this.renderer.removeClass(this.currentSpan, 'selected');
       const annotation = this.sharedDataService.getAnnotationData().pop();
       if (annotation) {
-        annotation.label = 'YourLabel'; 
+        annotation.label = 'YourLabel';
         this.sharedDataService.addAnnotationData(annotation);
       }
     }
@@ -105,7 +114,7 @@ export class SelectorAreaComponent {
         a.click();
         window.URL.revokeObjectURL(url);
         this.loading = false;
-        
+
         // Clear the annotation data and reset the report data
         this.sharedDataService.resetData();
       },

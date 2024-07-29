@@ -1,7 +1,7 @@
 import { Component, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SharedDataService } from '../services/shared-data.service'; 
+import { SharedDataService } from '../services/shared-data.service';
 
 @Component({
   selector: 'app-labels-list',
@@ -13,10 +13,10 @@ import { SharedDataService } from '../services/shared-data.service';
 export class LabelsListComponent {
   newLabel: string = '';
   labels: Array<{ text: string, color: string }> = [];
-  colors: Array<string> = ['#8A2BE2', '#FF6347', '#4682B4', '#32CD32', '#FF4500', '#DA70D6'];
+  colors: Array<string> = ['#8a3552', '#4f3f8c', '#255f61', '#b73a1b', '#FF4500', '#DA70D6'];
   errorMessage: string | null = null;
 
-  constructor(private renderer: Renderer2, private sharedDataService: SharedDataService) {}
+  constructor(private renderer: Renderer2, private sharedDataService: SharedDataService) { }
 
   addLabelButton() {
     if (this.newLabel.trim() === '') {
@@ -32,7 +32,7 @@ export class LabelsListComponent {
     const color = this.colors[this.labels.length % this.colors.length];
     this.labels.push({ text: formattedLabel, color });
     this.newLabel = '';
-    this.errorMessage = null; 
+    this.errorMessage = null;
   }
 
   removeLabelButton(label: string, event: Event) {
@@ -62,7 +62,7 @@ export class LabelsListComponent {
     span.addEventListener('click', () => {
       console.log('Label Applied:', { text: label.text, color: label.color });
       this.sharedDataService.performAllActions(label.text);
-      this.resetSelection();
+      this.resetSelection(label);
     });
 
     // Clear the selection
@@ -72,10 +72,42 @@ export class LabelsListComponent {
     console.log('Label Applied:', { text: label.text, color: label.color });
   }
 
-  resetSelection() {
+  resetSelection(label: { text: string, color: string }) {
     const selectedElements = document.querySelectorAll('.selected');
     selectedElements.forEach(element => {
       this.renderer.removeClass(element, 'selected');
+
+      // Generate a random class name
+      const randomClassName = `class-${Math.random().toString(36).substr(2, 9)}`;
+
+      // Add the random class name to the element
+      this.renderer.addClass(element, randomClassName);
+
+      // Add CSS rule for the new class to the document
+      const styleSheet = document.styleSheets[0];
+      (styleSheet as CSSStyleSheet).insertRule(`
+        .${randomClassName} { 
+          background-color: ${label.color} !important; 
+          border-radius: 5px !important; 
+          padding: 5px 10px 5px 5px !important; 
+          color: white !important;
+          font-weight: bold !important; 
+          word-spacing: 1rem !important;
+        }
+      `, styleSheet.cssRules.length);
+
+      // Create a span element containing label.text
+      const span = this.renderer.createElement('span');
+      this.renderer.setStyle(span, 'background-color', 'white');
+      this.renderer.setStyle(span, 'color', 'black');
+      this.renderer.setStyle(span, 'margin', '0px 10px 0px 10px');
+      this.renderer.setStyle(span, 'padding', '1px 1px 1px 1px');
+      this.renderer.setStyle(span, 'font-weight', 'lighter');
+      this.renderer.setStyle(span, 'word-spacing', '1rem');
+      span.textContent = label.text;
+
+      // Append the span to the end of the selected text
+      this.renderer.appendChild(element, span);
     });
   }
 }

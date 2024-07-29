@@ -13,7 +13,7 @@ export class FileUploadService {
 
   upload(file: File): Observable<any> {
     const formData: FormData = new FormData();
-    formData.append('files', file, file.name);
+    formData.append('file', file, file.name);
     return this.http.post(this.baseUrl, formData);
   }
 }

@@ -5,7 +5,7 @@
 
 .label-container.has-labels {
   border: solid #43729d;
-  padding: 5px ;
+  padding: 5px;
 }
 
 .input-container {
@@ -20,6 +20,7 @@
   cursor: pointer;
   border: none;
   outline: none;
+  font-weight: bold;
 }
 
 .remove-button {
@@ -35,4 +36,9 @@
 .error-message {
   color: red;
   margin-top: 10px;
+}
+
+.label-span {
+  font-weight: bold;
+  margin-left: 5px;
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FileUploadService } from '../services/file-upload.service';
+import { SharedDataService } from '../services/shared-data.service';
 
 @Component({
   selector: 'app-file-upload',
@@ -10,8 +11,16 @@ import { FileUploadService } from '../services/file-upload.service';
 })
 export class FileUploadComponent {
 
-  constructor() { }
+  constructor(
+    private fileUploadService: FileUploadService,
+    private sharedDataService: SharedDataService
+  ) { }
 
- 
-   
+  upload(event: any) {
+    this.fileUploadService.upload(event.target.files[0]).subscribe(result => {
+      this.sharedDataService.updateReportDocument(result.text.replace(" \u201c", " "));
+      console.log(result.text);
+    });
+  }
+
 }

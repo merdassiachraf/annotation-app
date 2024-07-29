@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Annotation } from './annotation.model'; // Adjust the path as necessary
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,10 @@ export class SharedDataService {
     }
   };
 
-  private cacheAnnotationData: Annotation[] = []; 
+  private reportSubject = new BehaviorSubject(this.reportData);
+  report$ = this.reportSubject.asObservable();
+
+  private cacheAnnotationData: Annotation[] = [];
 
   addAnnotationData(annotation: Annotation) {
     // Check for duplicates
@@ -59,6 +63,31 @@ export class SharedDataService {
     this.logReport();
   }
 
+  updateReportDocument(text: string) {
+    // Replace common Unicode escape sequences with actual characters
+    const replacements: { [key: string]: string } = {
+      '\\u201c': '"',
+      '\\u201d': '"',
+      '\\u2018': "'",
+      '\\u2019': "'",
+      '\\u2014': '—',
+      '\\u2026': '…',
+      '\\u2013': '–',
+      '\"':""
+
+    };
+
+    let cleanedText = text;
+    for (const [unicode, char] of Object.entries(replacements)) {
+      const regex = new RegExp(unicode, 'g');
+      cleanedText = cleanedText.replace(regex, char);
+    }
+
+    this.reportData.report.document = cleanedText;
+    this.reportSubject.next(this.reportData);
+    console.log('Updated Report Document:', this.reportData.report.document);
+  }
+
   get report() {
     return this.reportData;
   }
@@ -72,6 +101,8 @@ export class SharedDataService {
       }
     };
     this.cacheAnnotationData = [];
+    this.reportSubject.next(this.reportData);
     console.log('Data has been reset to initial state.');
   }
 }
+
