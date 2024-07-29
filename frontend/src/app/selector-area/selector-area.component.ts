@@ -91,6 +91,9 @@ export class SelectorAreaComponent {
         a.click();
         window.URL.revokeObjectURL(url);
         this.loading = false;
+        
+        // Clear the annotation data and reset the report data
+        this.sharedDataService.resetData();
       },
       error: (error) => {
         console.error('Error sending report', error);

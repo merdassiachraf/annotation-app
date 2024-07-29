@@ -14,19 +14,16 @@ export class SharedDataService {
 
   private cacheAnnotationData: Annotation[] = []; 
 
-  // Method to add annotation data
   addAnnotationData(annotation: Annotation) {
     this.cacheAnnotationData.push(annotation);
     console.log('Cache Annotation Data:', this.cacheAnnotationData);
   }
 
-  // Method to get annotation data
   getAnnotationData() {
     console.log('Cache Annotation Data:', this.cacheAnnotationData);
     return this.cacheAnnotationData;
   }
 
-  // Method to update all annotation labels
   updateAllAnnotationLabels(label: string) {
     this.cacheAnnotationData = this.cacheAnnotationData.map(annotation => ({
       ...annotation,
@@ -35,7 +32,6 @@ export class SharedDataService {
     console.log('Updated Annotation Data:', this.cacheAnnotationData);
   }
 
-  // Method to append annotation data to report and clear cache
   appendAnnotationsToReport() {
     this.reportData.report.annotation.push(...this.cacheAnnotationData);
     this.cacheAnnotationData = [];
@@ -43,12 +39,10 @@ export class SharedDataService {
     console.log('Cache Cleared:', this.cacheAnnotationData);
   }
 
-  // Method to log the report
   logReport() {
     console.log('Current Report:', this.reportData);
   }
 
-  // Method to perform all actions in one go and log everything
   performAllActions(label: string) {
     this.updateAllAnnotationLabels(label);
     this.appendAnnotationsToReport();
@@ -58,5 +52,17 @@ export class SharedDataService {
 
   get report() {
     return this.reportData;
+  }
+
+  // Method to reset the data to the initial state
+  resetData() {
+    this.reportData = {
+      report: {
+        document: '',
+        annotation: []
+      }
+    };
+    this.cacheAnnotationData = [];
+    console.log('Data has been reset to initial state.');
   }
 }

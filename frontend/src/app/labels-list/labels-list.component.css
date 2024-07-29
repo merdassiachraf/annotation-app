@@ -1,13 +1,9 @@
 .label-container {
-  position: relative;
+  height: 60px;
 }
 
 .input-container {
-  position: absolute;
-  top: 100px;
-  left: 100px;
-  background-color: white;
-  z-index: 1000;
+  background-color: #f5f6fa;
 }
 
 .label-tag {

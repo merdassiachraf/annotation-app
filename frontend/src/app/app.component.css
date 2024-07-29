@@ -6,22 +6,26 @@ body {
     justify-content: space-between;
 }
 
+h2 {
+    color: #0070c0;
+    text-align: center;
+    width: 100%;
+}
+
 .inputs-parameters-section {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items: center;
     width: 100%;
     margin: 0 0 0 0;
     background-color: #f5f6fa;
-    padding: 50px;
-    height: 250px;
 }
 
 .inputs-parameters-section>* {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    background-color: #f5f6fa;
+
 }
 
 
